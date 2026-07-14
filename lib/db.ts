@@ -9,10 +9,14 @@ types.setTypeParser(1082, (value) => value)
 // Managed Postgres providers (e.g. Supabase's pooler) present a cert chain
 // that Node's strict verification rejects as "self-signed" in some runtimes
 // (this is expected and it's what the provider itself recommends working
-// around). Only relax verification when the connection string actually asks
-// for SSL, so local Docker Postgres (no SSL) is unaffected.
+// around). Deliberately don't rely on `sslmode=require` in the URL for this:
+// newer pg-connection-string versions treat that mode as an alias for
+// verify-full and silently override the `ssl` option below with strict
+// verification, defeating the point. Local Docker Postgres has no SSL, so
+// only relax verification for anything that isn't localhost.
 const connectionString = process.env.DATABASE_URL
-const useSsl = connectionString?.includes('sslmode=require') ?? false
+const isLocalDb = connectionString?.includes('localhost') || connectionString?.includes('127.0.0.1')
+const useSsl = Boolean(connectionString) && !isLocalDb
 
 // PostgreSQL Pool
 const pool = new Pool({
