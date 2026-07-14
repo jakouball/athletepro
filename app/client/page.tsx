@@ -1,10 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { toDateString } from '@/components/HorizontalCalendar'
 
 export default function ClientLogin() {
+  return (
+    <Suspense fallback={null}>
+      <ClientLoginForm />
+    </Suspense>
+  )
+}
+
+function ClientLoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const coachSlug = searchParams.get('coach') || ''
