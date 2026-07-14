@@ -6,12 +6,21 @@ import { Pool, types } from 'pg'
 // the raw 'YYYY-MM-DD' string instead so date comparisons stay correct.
 types.setTypeParser(1082, (value) => value)
 
+// Managed Postgres providers (e.g. Supabase's pooler) present a cert chain
+// that Node's strict verification rejects as "self-signed" in some runtimes
+// (this is expected and it's what the provider itself recommends working
+// around). Only relax verification when the connection string actually asks
+// for SSL, so local Docker Postgres (no SSL) is unaffected.
+const connectionString = process.env.DATABASE_URL
+const useSsl = connectionString?.includes('sslmode=require') ?? false
+
 // PostgreSQL Pool
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
+  ssl: useSsl ? { rejectUnauthorized: false } : undefined,
 })
 
 pool.on('error', (err) => {
