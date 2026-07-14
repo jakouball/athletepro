@@ -23,12 +23,15 @@ CREATE TABLE training_groups (
   UNIQUE (coach_id, code)
 );
 
--- Tabulka klientů
+-- Tabulka klientů. session_token/token_created_at drží klientskou přihlašovací
+-- session (vydává ji POST /api/auth/login, ověřuje /api/auth/verify).
 CREATE TABLE clients (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(255) NOT NULL,
   code VARCHAR(50) NOT NULL UNIQUE,
   coach_id UUID NOT NULL REFERENCES coaches(id) ON DELETE CASCADE,
+  session_token UUID,
+  token_created_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
