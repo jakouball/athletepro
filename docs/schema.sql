@@ -3,12 +3,25 @@
 -- Tabulka trenérů. Každý trenér má vlastní izolovaná data (klienti, tréninky,
 -- skupiny) a vlastní přihlašovací slug pro sdílení klientského loginu
 -- (/client?coach=<slug>). password_hash je ve formátu "salt:scryptHash".
+-- coach_type nastavuje pouze super admin (/super-admin), běžný trenér ho
+-- v adminu nevidí ani neupravuje.
 CREATE TABLE coaches (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email VARCHAR(255) UNIQUE NOT NULL,
   name VARCHAR(255) NOT NULL,
   password_hash VARCHAR(255),
   slug VARCHAR(50) UNIQUE,
+  coach_type VARCHAR(20) CHECK (coach_type IN ('fitness', 'football')),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabulka super adminů (vlastník platformy). Odděleno od coaches - super admin
+-- spravuje trenérské účty přes /super-admin, přihlašuje se vlastní session
+-- cookie (super_admin_session, viz lib/superAdminAuth.ts).
+CREATE TABLE super_admins (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
