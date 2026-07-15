@@ -19,6 +19,16 @@ function getWorkoutTypeLabel(workout: any) {
   return workout.training_group_code || workout.training_group_name || 'Skupina'
 }
 
+function getEligibleClients(workout: any, clients: any[]) {
+  if (workout.workout_type === 'individual') {
+    return clients.filter((client) => client.id === workout.client_id)
+  }
+  return clients.filter((client) =>
+    Array.isArray(client.training_groups) &&
+    client.training_groups.some((group: any) => group.id === workout.training_group_id)
+  )
+}
+
 export default function AdminDashboard() {
   const router = useRouter()
   const [clients, setClients] = useState<any[]>([])
@@ -609,7 +619,12 @@ export default function AdminDashboard() {
                       <p className="text-sm text-ink-muted">Načítám docházku...</p>
                     ) : (
                       <div className="space-y-2">
-                        {clients.map((client) => {
+                        {getEligibleClients(workout, clients).length === 0 ? (
+                          <p className="text-sm text-ink-muted">
+                            Žádný klient nepatří do této tréninkové skupiny.
+                          </p>
+                        ) : null}
+                        {getEligibleClients(workout, clients).map((client) => {
                           const isCheckedIn = attendance.checkins.some((checkin) => checkin.client_id === client.id)
                           const clientDayResults = attendance.results.filter((r) => r.client_id === client.id)
                           const toggleKey = `${workout.id}:${client.id}`

@@ -99,13 +99,37 @@ export async function POST(request: NextRequest) {
 
     const ownership = await query(
       `SELECT
-        (SELECT 1 FROM workouts WHERE id = $1 AND coach_id = $3) as owns_workout,
-        (SELECT 1 FROM clients WHERE id = $2 AND coach_id = $3) as owns_client`,
+        w.workout_type,
+        w.training_group_id,
+        w.client_id as workout_client_id,
+        (SELECT 1 FROM clients WHERE id = $2 AND coach_id = $3) as owns_client,
+        EXISTS (
+          SELECT 1 FROM client_training_groups ctg
+          WHERE ctg.client_id = $2 AND ctg.training_group_id = w.training_group_id
+        ) as client_in_group
+       FROM workouts w
+       WHERE w.id = $1 AND w.coach_id = $3`,
       [workout_id, client_id, coachId]
     )
 
-    if (!ownership.rows[0]?.owns_workout || !ownership.rows[0]?.owns_client) {
+    const workout = ownership.rows[0]
+
+    if (!workout || !workout.owns_client) {
       return NextResponse.json({ error: 'Workout or client not found' }, { status: 404 })
+    }
+
+    if (workout.workout_type === 'individual' && workout.workout_client_id !== client_id) {
+      return NextResponse.json(
+        { error: 'Klient není přiřazen k tomuto individuálnímu tréninku.' },
+        { status: 403 }
+      )
+    }
+
+    if (workout.workout_type === 'group' && !workout.client_in_group) {
+      return NextResponse.json(
+        { error: 'Klient nepatří do tréninkové skupiny tohoto tréninku.' },
+        { status: 403 }
+      )
     }
 
     const result = await query(
