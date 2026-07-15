@@ -92,18 +92,18 @@ export default function HorizontalCalendar({ selectedDate, onSelectDate, markedD
           type="button"
           onClick={goToPreviousWeek}
           aria-label="Předchozí týden"
-          className="rounded p-1 text-lg text-gray-500 hover:bg-gray-100"
+          className="rounded-full p-1.5 text-lg text-ink-muted hover:bg-surface-muted"
         >
           ‹
         </button>
-        <p className="text-sm font-semibold text-gray-700">
+        <p className="text-sm font-semibold text-ink">
           {formatRangeLabel(days[0], days[DAYS_IN_WEEK - 1])}
         </p>
         <button
           type="button"
           onClick={goToNextWeek}
           aria-label="Následující týden"
-          className="rounded p-1 text-lg text-gray-500 hover:bg-gray-100"
+          className="rounded-full p-1.5 text-lg text-ink-muted hover:bg-surface-muted"
         >
           ›
         </button>
@@ -124,10 +124,10 @@ export default function HorizontalCalendar({ selectedDate, onSelectDate, markedD
               key={dateString}
               type="button"
               onClick={() => onSelectDate(dateString)}
-              className={`flex flex-col items-center gap-1 rounded-lg border py-2 transition-colors ${
+              className={`flex flex-col items-center gap-1 rounded-2xl border py-2 transition-colors ${
                 isSelected
-                  ? 'border-blue-600 bg-blue-600 text-white'
-                  : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                  ? 'border-accent bg-accent text-white'
+                  : 'border-border bg-surface text-ink hover:border-accent-soft'
               }`}
             >
               <span className="text-xs uppercase tracking-wide opacity-80">
@@ -136,7 +136,7 @@ export default function HorizontalCalendar({ selectedDate, onSelectDate, markedD
               <span className="text-lg font-semibold">{date.getDate()}</span>
               <span
                 className={`h-1.5 w-1.5 rounded-full ${
-                  isMarked ? (isSelected ? 'bg-white' : 'bg-blue-600') : 'bg-transparent'
+                  isMarked ? (isSelected ? 'bg-white' : 'bg-accent') : 'bg-transparent'
                 }`}
               />
             </button>

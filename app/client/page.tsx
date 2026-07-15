@@ -88,24 +88,24 @@ function ClientLoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-900 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-accent to-accent-strong flex items-center justify-center p-4">
+      <div className="bg-surface rounded-3xl shadow-xl p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center mb-8">AthletePro</h1>
 
         {loading ? (
-          <p className="text-center text-gray-500">Načítám klienty...</p>
+          <p className="text-center text-ink-muted">Načítám klienty...</p>
         ) : error ? (
           <p className="text-center text-red-600">{error}</p>
         ) : (
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-ink mb-2">
                 Vyber své jméno
               </label>
               <select
                 value={selectedClient || ''}
                 onChange={(e) => handleClientSelect(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                className="w-full px-4 py-2 border border-border rounded-2xl focus:ring-2 focus:ring-accent focus:border-transparent"
                 required
               >
                 <option value="">-- Vybrat --</option>
@@ -119,7 +119,7 @@ function ClientLoginForm() {
 
             {showCodeInput && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-ink mb-2">
                   Přístupový kód
                 </label>
                 <input
@@ -127,7 +127,7 @@ function ClientLoginForm() {
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   placeholder="Zadej kód"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-border rounded-2xl focus:ring-2 focus:ring-accent focus:border-transparent"
                   required
                 />
               </div>
@@ -138,14 +138,14 @@ function ClientLoginForm() {
             <button
               type="submit"
               disabled={!selectedClient || !code}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              className="w-full bg-accent text-white py-3 rounded-full hover:bg-accent-strong disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
             >
               Přihlásit se
             </button>
           </form>
         )}
 
-        <p className="text-center text-gray-500 text-sm mt-4">
+        <p className="text-center text-ink-muted text-sm mt-4">
           Máš otázky? Kontaktuj svého trenéra.
         </p>
       </div>

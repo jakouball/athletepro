@@ -554,20 +554,20 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
+    <div className="min-h-screen bg-background">
+      <header className="bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto py-6 px-4 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">AthletePro Admin</h1>
+            <h1 className="text-3xl font-bold text-ink">AthletePro Admin</h1>
             {coach && (
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-ink-muted mt-1">
                 {coach.name} · Odkaz pro klienty: <span className="font-mono">/client?coach={coach.slug}</span>
               </p>
             )}
           </div>
           <button
             onClick={() => void handleLogout()}
-            className="text-sm bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+            className="text-sm bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700"
           >
             Odhlásit se
           </button>
@@ -575,7 +575,7 @@ export default function AdminDashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto py-8 px-4 space-y-8">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-surface rounded-3xl shadow-sm p-6">
           <h2 className="text-xl font-semibold mb-4">Trénink podle dne</h2>
 
           <HorizontalCalendar
@@ -586,27 +586,27 @@ export default function AdminDashboard() {
 
           <div className="mt-4 space-y-4">
             {selectedDayWorkouts.length === 0 ? (
-              <p className="text-gray-500">Pro tento den není naplánovaný žádný trénink.</p>
+              <p className="text-ink-muted">Pro tento den není naplánovaný žádný trénink.</p>
             ) : (
               selectedDayWorkouts.map((workout) => {
                 const attendance = dayAttendance[workout.id] || { checkins: [], results: [] }
 
                 return (
-                  <div key={workout.id} className="border border-gray-200 rounded-lg p-4 space-y-4">
+                  <div key={workout.id} className="border border-border rounded-2xl p-4 space-y-4">
                     <div>
                       <div className="flex items-center gap-2">
                         <p className="font-medium">{workout.name}</p>
-                        <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                        <span className="rounded-full bg-surface-muted px-2.5 py-1 text-xs text-ink-muted">
                           {getWorkoutTypeLabel(workout)}
                         </span>
                       </div>
                       {workout.description?.trim() ? (
-                        <p className="text-sm text-gray-600 mt-1">{workout.description}</p>
+                        <p className="text-sm text-ink-muted mt-1">{workout.description}</p>
                       ) : null}
                     </div>
 
                     {dayLoading ? (
-                      <p className="text-sm text-gray-500">Načítám docházku...</p>
+                      <p className="text-sm text-ink-muted">Načítám docházku...</p>
                     ) : (
                       <div className="space-y-2">
                         {clients.map((client) => {
@@ -615,7 +615,7 @@ export default function AdminDashboard() {
                           const toggleKey = `${workout.id}:${client.id}`
 
                           return (
-                            <div key={client.id} className="border border-gray-200 rounded p-3">
+                            <div key={client.id} className="border border-border rounded-2xl p-3">
                               <label className="flex items-center justify-between gap-3 cursor-pointer">
                                 <span className="flex items-center gap-2">
                                   <input
@@ -627,7 +627,7 @@ export default function AdminDashboard() {
                                   />
                                   <span className="font-medium">{client.name}</span>
                                 </span>
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-ink-muted">
                                   {isCheckedIn ? 'Přihlášen' : 'Nepřihlášen'}
                                 </span>
                               </label>
@@ -635,13 +635,13 @@ export default function AdminDashboard() {
                               {isCheckedIn && (
                                 <div className="mt-3 pl-6 space-y-2">
                                   {clientDayResults.length === 0 ? (
-                                    <p className="text-sm text-gray-500">Zatím nezapsal žádný výsledek.</p>
+                                    <p className="text-sm text-ink-muted">Zatím nezapsal žádný výsledek.</p>
                                   ) : (
                                     clientDayResults.map((result) => {
                                       const isEditingThisResult = editingResultId === result.id
 
                                       return (
-                                        <div key={result.id} className="rounded border border-gray-200 bg-white p-2">
+                                        <div key={result.id} className="rounded-2xl border border-border bg-surface p-2">
                                           {isEditingThisResult ? (
                                             <div className="space-y-2">
                                               <p className="text-sm font-medium">{result.exercise_name}</p>
@@ -649,19 +649,19 @@ export default function AdminDashboard() {
                                                 type="text"
                                                 value={editingResultValue}
                                                 onChange={(e) => setEditingResultValue(e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                                className="w-full px-3 py-2 border border-border rounded-2xl"
                                               />
                                               <textarea
                                                 rows={2}
                                                 value={editingResultNotes}
                                                 onChange={(e) => setEditingResultNotes(e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                                className="w-full px-3 py-2 border border-border rounded-2xl"
                                                 placeholder="Poznámka"
                                               />
                                               <select
                                                 value={editingResultRpe}
                                                 onChange={(e) => setEditingResultRpe(e.target.value)}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                                                className="w-full px-3 py-2 border border-border rounded-2xl"
                                               >
                                                 <option value="">RPE: nezadáno</option>
                                                 {Array.from({ length: 10 }, (_, index) => index + 1).map((value) => (
@@ -675,14 +675,14 @@ export default function AdminDashboard() {
                                                   type="button"
                                                   onClick={() => void handleSaveResultEdit(result.id)}
                                                   disabled={updatingResultId === result.id}
-                                                  className="rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
+                                                  className="rounded-full bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
                                                 >
                                                   {updatingResultId === result.id ? 'Ukládám...' : 'Uložit'}
                                                 </button>
                                                 <button
                                                   type="button"
                                                   onClick={handleCancelEditResult}
-                                                  className="rounded border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                                  className="rounded-full border border-border px-3 py-2 text-sm text-ink hover:bg-surface-muted"
                                                 >
                                                   Zrušit
                                                 </button>
@@ -694,14 +694,14 @@ export default function AdminDashboard() {
                                                 <span className="flex flex-wrap items-center gap-2">
                                                   <span className="font-medium">{result.exercise_name}:</span>
                                                   <span>{result.value}</span>
-                                                  {result.rpe ? <span className="rounded bg-orange-50 px-1.5 py-0.5 text-xs text-orange-700">RPE {result.rpe}</span> : null}
-                                                  {result.notes ? <span className="text-gray-500">({result.notes})</span> : null}
+                                                  {result.rpe ? <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent-strong">RPE {result.rpe}</span> : null}
+                                                  {result.notes ? <span className="text-ink-muted">({result.notes})</span> : null}
                                                 </span>
                                                 <span className="flex items-center gap-2 whitespace-nowrap">
                                                   <button
                                                     type="button"
                                                     onClick={() => handleStartEditResult(result)}
-                                                    className="text-blue-600 hover:text-blue-700"
+                                                    className="text-accent-strong hover:opacity-70"
                                                   >
                                                     Upravit
                                                   </button>
@@ -709,14 +709,14 @@ export default function AdminDashboard() {
                                                     type="button"
                                                     onClick={() => void handleDeleteResult(result.id)}
                                                     disabled={deletingResultId === result.id}
-                                                    className="text-red-600 hover:text-red-700 disabled:opacity-50"
+                                                    className="text-red-600 hover:opacity-70 disabled:opacity-50"
                                                   >
                                                     {deletingResultId === result.id ? 'Mazání...' : 'Smazat'}
                                                   </button>
                                                 </span>
                                               </div>
                                               {result.exercise_description?.trim() ? (
-                                                <p className="text-xs text-gray-500 whitespace-pre-wrap break-words">{result.exercise_description}</p>
+                                                <p className="text-xs text-ink-muted whitespace-pre-wrap break-words">{result.exercise_description}</p>
                                               ) : null}
                                             </div>
                                           )}
@@ -739,24 +739,24 @@ export default function AdminDashboard() {
             <button
               type="button"
               onClick={handleCreateWorkoutForSelectedDate}
-              className="whitespace-nowrap text-sm bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700"
+              className="whitespace-nowrap text-sm bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700"
             >
               {selectedDayWorkouts.length === 0 ? 'Vytvořit trénink na tento den' : '+ Přidat další trénink na tento den'}
             </button>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-surface rounded-3xl shadow-sm p-6">
           <h2 className="text-xl font-semibold mb-4">Tréninkové skupiny</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-2">
               {trainingGroups.length === 0 ? (
-                <p className="text-sm text-gray-500">Zatím žádné skupiny.</p>
+                <p className="text-sm text-ink-muted">Zatím žádné skupiny.</p>
               ) : (
                 trainingGroups.map((group) => (
-                  <div key={group.id} className="border border-gray-200 rounded p-3">
+                  <div key={group.id} className="border border-border rounded-2xl p-3">
                     <p className="font-medium">{group.name}</p>
-                    {group.code ? <p className="text-sm text-gray-500">Kód: {group.code}</p> : null}
+                    {group.code ? <p className="text-sm text-ink-muted">Kód: {group.code}</p> : null}
                   </div>
                 ))
               )}
@@ -769,20 +769,20 @@ export default function AdminDashboard() {
                 value={newGroupName}
                 onChange={(e) => setNewGroupName(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
               <input
                 type="text"
                 placeholder="Krátký kód (volitelné, např. POKR)"
                 value={newGroupCode}
                 onChange={(e) => setNewGroupCode(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
               {groupFormError && <p className="text-sm text-red-600">{groupFormError}</p>}
               <button
                 type="submit"
                 disabled={creatingGroup}
-                className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 disabled:opacity-50"
+                className="w-full bg-green-600 text-white py-3 rounded-full hover:bg-green-700 disabled:opacity-50"
               >
                 {creatingGroup ? 'Vytvářím...' : '+ Nová skupina'}
               </button>
@@ -791,7 +791,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-surface rounded-3xl shadow-sm p-6">
             <h2 className="text-xl font-semibold mb-4">Přidat klienta</h2>
             <form onSubmit={handleAddClient} className="space-y-4">
               <input
@@ -800,7 +800,7 @@ export default function AdminDashboard() {
                 value={newClientName}
                 onChange={(e) => setNewClientName(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
               <input
                 type="text"
@@ -808,15 +808,15 @@ export default function AdminDashboard() {
                 value={newClientCode}
                 onChange={(e) => setNewClientCode(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
               <div className="space-y-1">
-                <span className="block text-sm font-medium text-gray-700">Tréninkové skupiny</span>
+                <span className="block text-sm font-medium text-ink">Tréninkové skupiny</span>
                 {trainingGroups.length === 0 ? (
-                  <p className="text-sm text-gray-500">Zatím žádné skupiny.</p>
+                  <p className="text-sm text-ink-muted">Zatím žádné skupiny.</p>
                 ) : (
                   trainingGroups.map((group) => (
-                    <label key={group.id} className="flex items-center gap-2 text-sm text-gray-700">
+                    <label key={group.id} className="flex items-center gap-2 text-sm text-ink">
                       <input
                         type="checkbox"
                         checked={newClientGroupIds.includes(group.id)}
@@ -835,14 +835,14 @@ export default function AdminDashboard() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                className="w-full bg-accent text-white py-3 rounded-full hover:bg-accent-strong disabled:opacity-50"
               >
                 {loading ? 'Přidávám...' : 'Přidat klienta'}
               </button>
             </form>
           </div>
 
-          <div id="workout-form" className="bg-white rounded-lg shadow p-6">
+          <div id="workout-form" className="bg-surface rounded-3xl shadow-sm p-6">
             <h2 className="text-xl font-semibold mb-4">
               {editingWorkoutId ? 'Upravit trénink' : 'Vytvořit trénink'}
             </h2>
@@ -853,7 +853,7 @@ export default function AdminDashboard() {
                 value={newWorkoutName}
                 onChange={(e) => setNewWorkoutName(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
               <textarea
                 rows={3}
@@ -861,23 +861,23 @@ export default function AdminDashboard() {
                 value={newWorkoutDescription}
                 onChange={(e) => setNewWorkoutDescription(e.target.value)}
                 onKeyDown={(e) => handleTextareaKeyDown(e, newWorkoutDescription, setNewWorkoutDescription)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
               <input
                 type="date"
                 value={newWorkoutDate}
                 onChange={(e) => setNewWorkoutDate(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-ink">
                   <span className="mb-1 block">Typ tréninku</span>
                   <select
                     value={newWorkoutType}
                     onChange={(e) => setNewWorkoutType(e.target.value as 'group' | 'individual')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-2xl"
                   >
                     <option value="group">Lekce (tréninková skupina)</option>
                     <option value="individual">Individuální trénink</option>
@@ -885,12 +885,12 @@ export default function AdminDashboard() {
                 </label>
 
                 {newWorkoutType === 'group' && (
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-ink">
                     <span className="mb-1 block">Tréninková skupina</span>
                     <select
                       value={newWorkoutGroupId}
                       onChange={(e) => setNewWorkoutGroupId(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-2xl"
                     >
                       <option value="">-- Vybrat skupinu --</option>
                       {trainingGroups.map((group) => (
@@ -903,12 +903,12 @@ export default function AdminDashboard() {
                 )}
 
                 {newWorkoutType === 'individual' && (
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-ink">
                     <span className="mb-1 block">Klient</span>
                     <select
                       value={newWorkoutClientId}
                       onChange={(e) => setNewWorkoutClientId(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-2xl"
                     >
                       <option value="">-- Vybrat klienta --</option>
                       {clients.map((client) => (
@@ -927,27 +927,27 @@ export default function AdminDashboard() {
                   <button
                     type="button"
                     onClick={handleAddExercise}
-                    className="text-sm text-blue-600 hover:text-blue-700"
+                    className="text-sm text-accent-strong hover:opacity-70"
                   >
                     + Přidat cvik
                   </button>
                 </div>
 
                 {exercises.map((exercise, index) => (
-                  <div key={index} className="border rounded-md p-3 space-y-2">
+                  <div key={index} className="border border-border rounded-2xl p-3 space-y-2">
                     <div className="flex items-center justify-between gap-2">
                       <input
                         type="text"
                         placeholder={`Název cviku ${index + 1}`}
                         value={exercise.name}
                         onChange={(e) => updateExercise(index, 'name', e.target.value)}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                        className="flex-1 px-3 py-2 border border-border rounded-2xl"
                       />
                       {exercises.length > 1 && (
                         <button
                           type="button"
                           onClick={() => handleRemoveExercise(index)}
-                          className="text-sm text-red-600 hover:text-red-700"
+                          className="text-sm text-red-600 hover:opacity-70"
                         >
                           Odebrat
                         </button>
@@ -959,12 +959,12 @@ export default function AdminDashboard() {
                       value={exercise.description}
                       onChange={(e) => updateExercise(index, 'description', e.target.value)}
                       onKeyDown={(e) => handleTextareaKeyDown(e, exercise.description, (value) => updateExercise(index, 'description', value))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-2xl"
                     />
                     <select
                       value={exercise.result_type}
                       onChange={(e) => updateExercise(index, 'result_type', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-2xl"
                     >
                       <option value="reps">Počet opakování</option>
                       <option value="weight">Váha</option>
@@ -983,7 +983,7 @@ export default function AdminDashboard() {
                 <button
                   type="submit"
                   disabled={workoutLoading}
-                  className="flex-1 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 disabled:opacity-50"
+                  className="flex-1 bg-green-600 text-white py-3 rounded-full hover:bg-green-700 disabled:opacity-50"
                 >
                   {workoutLoading
                     ? editingWorkoutId ? 'Ukládám...' : 'Vytvářím...'
@@ -993,7 +993,7 @@ export default function AdminDashboard() {
                   <button
                     type="button"
                     onClick={handleCancelEdit}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    className="px-4 py-2 border border-border rounded-2xl text-ink hover:bg-surface-muted"
                   >
                     Zrušit
                   </button>
@@ -1004,14 +1004,14 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-surface rounded-3xl shadow-sm p-6">
             <h2 className="text-xl font-semibold mb-4">Klienti ({clients.length})</h2>
             <div className="space-y-2">
               {clients.map((client) => (
-                <div key={client.id} className="flex items-center justify-between border border-gray-200 rounded p-3">
+                <div key={client.id} className="flex items-center justify-between border border-border rounded-2xl p-3">
                   <Link href={`/admin/clients/${client.id}`} className="flex-1 hover:opacity-80">
                     <p className="font-medium">{client.name}</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-ink-muted">
                       Kód: {client.code} · Tréninky: {clientCheckinCounts[client.id] || 0}
                       {Array.isArray(client.training_groups) && client.training_groups.length > 0
                         ? ` · Skupiny: ${client.training_groups.map((g: any) => g.name).join(', ')}`
@@ -1021,7 +1021,7 @@ export default function AdminDashboard() {
                   <div className="flex items-center gap-3">
                     <Link
                       href={`/admin/clients/${client.id}`}
-                      className="text-sm text-blue-600 hover:text-blue-700"
+                      className="text-sm text-accent-strong hover:opacity-70"
                     >
                       Detail
                     </Link>
@@ -1029,7 +1029,7 @@ export default function AdminDashboard() {
                       type="button"
                       onClick={() => void handleDeleteClient(client.id)}
                       disabled={deletingClientId === client.id}
-                      className="text-sm text-red-600 hover:text-red-700 disabled:opacity-50"
+                      className="text-sm text-red-600 hover:opacity-70 disabled:opacity-50"
                     >
                       {deletingClientId === client.id ? 'Mazání...' : 'Smazat'}
                     </button>
@@ -1039,44 +1039,44 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-surface rounded-3xl shadow-sm p-6">
             <h2 className="text-xl font-semibold mb-4">Tréninky ({workouts.length})</h2>
             <div className="space-y-3">
               {workouts.map((workout) => (
-                <div key={workout.id} className="border border-gray-200 rounded p-3">
+                <div key={workout.id} className="border border-border rounded-2xl p-3">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2">
                         <p className="font-medium">{workout.name}</p>
-                        <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
+                        <span className="rounded-full bg-surface-muted px-2.5 py-1 text-xs text-ink-muted">
                           {getWorkoutTypeLabel(workout)}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500">{workout.description || 'Bez popisu'}</p>
+                      <p className="text-sm text-ink-muted">{workout.description || 'Bez popisu'}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => handleEditWorkout(workout)}
-                        className="text-sm text-blue-600 hover:text-blue-700"
+                        className="text-sm text-accent-strong hover:opacity-70"
                       >
                         Upravit
                       </button>
                       <button
                         type="button"
                         onClick={() => handleDuplicateWorkout(workout)}
-                        className="text-sm text-gray-600 hover:text-gray-700"
+                        className="text-sm text-ink-muted hover:opacity-70"
                       >
                         Duplikovat
                       </button>
                       <button
                         type="button"
                         onClick={() => handleDeleteWorkout(workout.id)}
-                        className="text-sm text-red-600 hover:text-red-700"
+                        className="text-sm text-red-600 hover:opacity-70"
                       >
                         Smazat
                       </button>
-                      <span className="text-xs text-gray-500">{workout.date}</span>
+                      <span className="text-xs text-ink-muted">{workout.date}</span>
                     </div>
                   </div>
                 </div>

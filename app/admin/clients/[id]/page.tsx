@@ -173,7 +173,7 @@ export default function ClientDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p>Načítám klienta...</p>
       </div>
     )
@@ -181,9 +181,9 @@ export default function ClientDetailPage() {
 
   if (notFound) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
-        <p className="text-gray-600">Klient nenalezen.</p>
-        <Link href="/admin" className="text-blue-600 hover:text-blue-700">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-ink-muted">Klient nenalezen.</p>
+        <Link href="/admin" className="text-accent-strong hover:opacity-70">
           Zpět do adminu
         </Link>
       </div>
@@ -191,10 +191,10 @@ export default function ClientDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
+    <div className="min-h-screen bg-background">
+      <header className="bg-surface border-b border-border">
         <div className="max-w-3xl mx-auto py-6 px-4">
-          <Link href="/admin" className="text-sm text-blue-600 hover:text-blue-700">
+          <Link href="/admin" className="text-sm text-accent-strong hover:opacity-70">
             ← Zpět do adminu
           </Link>
           <h1 className="text-2xl font-bold mt-1">{name || 'Klient'}</h1>
@@ -202,42 +202,42 @@ export default function ClientDetailPage() {
       </header>
 
       <main className="max-w-3xl mx-auto py-8 px-4 space-y-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-surface rounded-3xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Údaje klienta</h2>
-            <span className="text-sm text-gray-500">Tréninky: {checkinCount}</span>
+            <span className="text-sm text-ink-muted">Tréninky: {checkinCount}</span>
           </div>
 
           <form onSubmit={handleSave} className="space-y-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-ink">
               <span className="mb-1 block">Jméno</span>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
             </label>
 
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-ink">
               <span className="mb-1 block">Přístupový kód</span>
               <input
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-2xl"
               />
             </label>
 
             <div className="space-y-1">
-              <span className="block text-sm font-medium text-gray-700">Tréninkové skupiny</span>
+              <span className="block text-sm font-medium text-ink">Tréninkové skupiny</span>
               {trainingGroups.length === 0 ? (
-                <p className="text-sm text-gray-500">Zatím žádné skupiny.</p>
+                <p className="text-sm text-ink-muted">Zatím žádné skupiny.</p>
               ) : (
                 trainingGroups.map((group) => (
-                  <label key={group.id} className="flex items-center gap-2 text-sm text-gray-700">
+                  <label key={group.id} className="flex items-center gap-2 text-sm text-ink">
                     <input
                       type="checkbox"
                       checked={trainingGroupIds.includes(group.id)}
@@ -261,7 +261,7 @@ export default function ClientDetailPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                className="bg-accent text-white px-4 py-2 rounded-full hover:bg-accent-strong disabled:opacity-50"
               >
                 {saving ? 'Ukládám...' : 'Uložit'}
               </button>
@@ -269,7 +269,7 @@ export default function ClientDetailPage() {
                 type="button"
                 onClick={() => setConfirmDeleteOpen(true)}
                 disabled={deleting}
-                className="text-sm text-red-600 hover:text-red-700 disabled:opacity-50"
+                className="text-sm text-red-600 hover:opacity-70 disabled:opacity-50"
               >
                 {deleting ? 'Mazání...' : 'Smazat klienta'}
               </button>
@@ -281,21 +281,21 @@ export default function ClientDetailPage() {
           <h2 className="text-lg font-semibold mb-3">Výsledky podle tréninku</h2>
 
           {resultsLoading ? (
-            <p className="text-sm text-gray-500">Načítám výsledky...</p>
+            <p className="text-sm text-ink-muted">Načítám výsledky...</p>
           ) : workoutCards.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-6 text-center">
-              <p className="text-gray-500">Klient zatím nezapsal žádný výsledek.</p>
+            <div className="bg-surface rounded-3xl shadow-sm p-6 text-center">
+              <p className="text-ink-muted">Klient zatím nezapsal žádný výsledek.</p>
             </div>
           ) : (
             <div className="space-y-3">
               {workoutCards.map((card) => (
                 <div
                   key={card.workoutId || `${card.workoutName}-${card.workoutDate}`}
-                  className="bg-white rounded-lg shadow p-4"
+                  className="bg-surface rounded-3xl shadow-sm p-4"
                 >
                   <div className="flex items-center justify-between">
                     <p className="font-medium">{card.workoutName}</p>
-                    <span className="text-xs text-gray-500">{card.workoutDate}</span>
+                    <span className="text-xs text-ink-muted">{card.workoutDate}</span>
                   </div>
                   <div className="mt-2 space-y-1">
                     {card.results.map((result: any) => (
@@ -303,9 +303,9 @@ export default function ClientDetailPage() {
                         <span className="font-medium">{result.exercise_name}:</span>
                         <span>{result.value}</span>
                         {result.rpe ? (
-                          <span className="rounded bg-orange-50 px-1.5 py-0.5 text-xs text-orange-700">RPE {result.rpe}</span>
+                          <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent-strong">RPE {result.rpe}</span>
                         ) : null}
-                        {result.notes ? <span className="text-gray-500">({result.notes})</span> : null}
+                        {result.notes ? <span className="text-ink-muted">({result.notes})</span> : null}
                       </div>
                     ))}
                   </div>

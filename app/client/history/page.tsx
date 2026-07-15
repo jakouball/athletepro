@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import BottomNav from '@/components/BottomNav'
 
 type ExerciseGroup = {
   exerciseName: string
@@ -76,58 +76,56 @@ export default function ClientHistory() {
     verifyAndLoad()
   }, [router])
 
+  const handleLogout = () => {
+    localStorage.removeItem('athletepro_client_id')
+    localStorage.removeItem('athletepro_client_token')
+    localStorage.removeItem('athletepro_client_name')
+    localStorage.removeItem('athletepro_coach_slug')
+    router.push('/client')
+  }
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p>Načítám historii...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-2xl mx-auto py-4 px-4 flex justify-between items-center gap-3">
-          <div>
-            <h1 className="text-2xl font-bold">Historie výsledků</h1>
-            <p className="text-sm text-gray-600">Přihlášený klient: {clientName}</p>
-          </div>
-          <Link
-            href="/client/workout"
-            className="text-sm bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 whitespace-nowrap"
-          >
-            Zpět na trénink
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background">
+      <header className="max-w-2xl mx-auto px-4 pt-8 pb-2">
+        <h1 className="text-3xl font-bold tracking-tight">Historie výsledků</h1>
+        <p className="text-sm text-ink-muted mt-1">Přihlášený klient: {clientName}</p>
       </header>
 
-      <main className="max-w-2xl mx-auto py-8 px-4 space-y-4">
+      <main className="max-w-2xl mx-auto py-4 px-4 pb-28 space-y-4">
         {groups.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="text-gray-600">Zatím nemáš zapsané žádné výsledky.</p>
+          <div className="bg-surface rounded-3xl shadow-sm p-6 text-center">
+            <p className="text-ink-muted">Zatím nemáš zapsané žádné výsledky.</p>
           </div>
         ) : (
           groups.map((group) => (
-            <div key={group.exerciseName} className="bg-white rounded-lg shadow p-6">
+            <div key={group.exerciseName} className="bg-surface rounded-3xl shadow-sm p-6">
               <div className="mb-3">
                 <h2 className="text-lg font-semibold">{group.exerciseName}</h2>
                 {group.entries[0]?.exercise_description?.trim() ? (
-                  <p className="text-xs text-gray-500 whitespace-pre-wrap break-words mt-1">
+                  <p className="text-xs text-ink-muted whitespace-pre-wrap break-words mt-1">
                     {group.entries[0].exercise_description}
                   </p>
                 ) : null}
               </div>
               <div className="space-y-2">
                 {group.entries.map((entry) => (
-                  <div key={entry.id} className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-2 last:border-0 last:pb-0">
+                  <div key={entry.id} className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2 last:border-0 last:pb-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium">{entry.value}</span>
                       {entry.rpe ? (
-                        <span className="rounded bg-orange-50 px-1.5 py-0.5 text-xs text-orange-700">RPE {entry.rpe}</span>
+                        <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent-strong">RPE {entry.rpe}</span>
                       ) : null}
-                      {entry.notes ? <span className="text-sm text-gray-500">{entry.notes}</span> : null}
+                      {entry.notes ? <span className="text-sm text-ink-muted">{entry.notes}</span> : null}
                     </div>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">
+                    <span className="text-xs text-ink-muted whitespace-nowrap">
                       {entry.workout_date || 'Bez data'}{entry.workout_name ? ` · ${entry.workout_name}` : ''}
                     </span>
                   </div>
@@ -137,6 +135,8 @@ export default function ClientHistory() {
           ))
         )}
       </main>
+
+      <BottomNav active="history" onLogout={handleLogout} />
     </div>
   )
 }

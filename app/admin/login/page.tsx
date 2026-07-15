@@ -39,30 +39,30 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-800 to-black flex items-center justify-center p-4">
+      <div className="bg-surface rounded-3xl shadow-xl p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center mb-8">AthletePro Admin</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <label className="block text-sm font-medium text-ink mb-2">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full px-4 py-2 border border-border rounded-2xl focus:ring-2 focus:ring-accent focus:border-transparent"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Heslo</label>
+            <label className="block text-sm font-medium text-ink mb-2">Heslo</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+              className="w-full px-4 py-2 border border-border rounded-2xl focus:ring-2 focus:ring-accent focus:border-transparent"
             />
           </div>
 
@@ -71,7 +71,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
+            className="w-full bg-accent text-white py-3 rounded-full hover:bg-accent-strong disabled:opacity-50 font-semibold"
           >
             {loading ? 'Přihlašuji...' : 'Přihlásit se'}
           </button>

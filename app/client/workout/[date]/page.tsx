@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import Link from 'next/link'
 import HorizontalCalendar, { toDateString } from '@/components/HorizontalCalendar'
+import BottomNav from '@/components/BottomNav'
 
 type ExerciseFormState = {
   value: string
@@ -447,40 +447,22 @@ export default function ClientWorkout() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p>Načítám trénink...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-2xl mx-auto py-4 px-4 flex justify-between items-center gap-3">
-          <div>
-            <h1 className="text-2xl font-bold">Trénink</h1>
-            <p className="text-sm text-gray-600">Přihlášený klient: {clientName}</p>
-            <p className="text-xs text-gray-500 mt-0.5">Odtrénováno: {formatWorkoutCount(attendedCount)}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/client/history"
-              className="text-sm bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 whitespace-nowrap"
-            >
-              Historie
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="text-sm bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-            >
-              Odhlásit se
-            </button>
-          </div>
-        </div>
+    <div className="min-h-screen bg-background">
+      <header className="max-w-2xl mx-auto px-4 pt-8 pb-2">
+        <h1 className="text-3xl font-bold tracking-tight">Trénink</h1>
+        <p className="text-sm text-ink-muted mt-1">Přihlášený klient: {clientName}</p>
+        <p className="text-xs text-ink-muted mt-0.5">Odtrénováno: {formatWorkoutCount(attendedCount)}</p>
       </header>
 
-      <main className="max-w-2xl mx-auto py-8 px-4 space-y-6">
-        <div className="bg-white rounded-lg shadow p-4">
+      <main className="max-w-2xl mx-auto py-4 px-4 pb-28 space-y-6">
+        <div className="bg-surface rounded-3xl shadow-sm p-4">
           <HorizontalCalendar
             selectedDate={selectedDate}
             onSelectDate={handleSelectDate}
@@ -489,19 +471,19 @@ export default function ClientWorkout() {
         </div>
 
         {workoutLoading && (
-          <p className="text-center text-xs text-gray-400">Aktualizuji...</p>
+          <p className="text-center text-xs text-ink-muted">Aktualizuji...</p>
         )}
 
         {checkedInWorkouts.length > 0 ? (
           checkedInWorkouts.map((workout: any) => (
-            <div key={workout.id} className="bg-white rounded-lg shadow p-6 space-y-6">
+            <div key={workout.id} className="bg-surface rounded-3xl shadow-sm p-6 space-y-6">
               <div className="space-y-3">
                 <div>
                   <h2 className="text-xl font-semibold mb-2">{workout.name}</h2>
                 </div>
-                <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">Popis tréninku</p>
-                  <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap break-words">
+                <div className="rounded-2xl border border-accent/20 bg-accent/10 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-accent-strong">Popis tréninku</p>
+                  <p className="mt-1 text-sm text-ink whitespace-pre-wrap break-words">
                     {workout.description?.trim() ? workout.description : 'Trenér zatím nepřidal žádný popis.'}
                   </p>
                 </div>
@@ -515,17 +497,17 @@ export default function ClientWorkout() {
                     const existingResult = existingResults[exercise.id]
 
                     return (
-                      <div key={exercise.id} className="border rounded-lg p-4 space-y-3">
+                      <div key={exercise.id} className="border border-border rounded-2xl p-4 space-y-3">
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <h3 className="font-semibold">{exercise.name}</h3>
-                            <span className="text-xs uppercase tracking-wide text-gray-500">
+                            <span className="text-xs uppercase tracking-wide text-ink-muted">
                               {exercise.result_type}
                             </span>
                           </div>
                           {exercise.description?.trim() ? (
-                            <div className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2">
-                              <p className="text-sm text-gray-700 whitespace-pre-wrap break-words">{exercise.description}</p>
+                            <div className="rounded-2xl border border-border bg-surface-muted px-4 py-3">
+                              <p className="text-sm text-ink whitespace-pre-wrap break-words">{exercise.description}</p>
                             </div>
                           ) : null}
                         </div>
@@ -537,23 +519,23 @@ export default function ClientWorkout() {
                           }}
                           className="space-y-3"
                         >
-                          <label className="block text-sm font-medium text-gray-700">
+                          <label className="block text-sm font-medium text-ink">
                             <span className="mb-1 block">{getResultLabel(exercise.result_type)}</span>
                             <input
                               type="text"
                               value={currentState.value}
                               onChange={(e) => handleFieldChange(exercise.id, 'value', e.target.value)}
                               placeholder={getResultPlaceholder(exercise.result_type)}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                              className="w-full px-3 py-2 border border-border rounded-2xl"
                             />
                           </label>
 
-                          <label className="block text-sm font-medium text-gray-700">
+                          <label className="block text-sm font-medium text-ink">
                             <span className="mb-1 block">RPE (volitelné, 1–10)</span>
                             <select
                               value={currentState.rpe}
                               onChange={(e) => handleFieldChange(exercise.id, 'rpe', e.target.value)}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                              className="w-full px-3 py-2 border border-border rounded-2xl"
                             >
                               <option value="">Nezadáno</option>
                               {Array.from({ length: 10 }, (_, index) => index + 1).map((value) => (
@@ -564,7 +546,7 @@ export default function ClientWorkout() {
                             </select>
                           </label>
 
-                          <label className="block text-sm font-medium text-gray-700">
+                          <label className="block text-sm font-medium text-ink">
                             <span className="mb-1 block">Poznámky</span>
                             <textarea
                               value={currentState.notes}
@@ -572,7 +554,7 @@ export default function ClientWorkout() {
                               onKeyDown={(e) => handleTextareaKeyDown(e, currentState.notes, (value) => handleFieldChange(exercise.id, 'notes', value))}
                               placeholder="Dodatečné poznámky"
                               rows={3}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                              className="w-full px-3 py-2 border border-border rounded-2xl"
                             />
                           </label>
 
@@ -580,7 +562,7 @@ export default function ClientWorkout() {
                             <button
                               type="submit"
                               disabled={submittingExerciseId === exercise.id}
-                              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                              className="bg-accent text-white px-4 py-2 rounded-full hover:bg-accent-strong disabled:opacity-50"
                             >
                               {submittingExerciseId === exercise.id
                                 ? 'Ukládám...'
@@ -597,23 +579,25 @@ export default function ClientWorkout() {
                     )
                   })
                 ) : (
-                  <p className="text-gray-500">Pro tento trénink zatím nejsou přidány žádné cviky.</p>
+                  <p className="text-ink-muted">Pro tento trénink zatím nejsou přidány žádné cviky.</p>
                 )}
               </div>
             </div>
           ))
         ) : hasWorkoutToday ? (
-          <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6 text-center">
+          <div className="rounded-2xl border border-yellow-200 bg-yellow-50 p-6 text-center">
             <p className="text-sm text-yellow-800">
               Dnes je naplánovaný trénink, ale trenér tě na něj zatím nepřihlásil. Ozvi se mu, ať tě přidá, a pak se sem vrať.
             </p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="text-lg text-gray-600">Pro tento den nemáš naplánovaný trénink 😎</p>
+          <div className="bg-surface rounded-3xl shadow-sm p-6 text-center">
+            <p className="text-lg text-ink-muted">Pro tento den nemáš naplánovaný trénink 😎</p>
           </div>
         )}
       </main>
+
+      <BottomNav active="workout" onLogout={handleLogout} />
     </div>
   )
 }
